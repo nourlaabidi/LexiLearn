@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<body>
+    {% include 'main/navbar.html' %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li></li>{{ message }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
+

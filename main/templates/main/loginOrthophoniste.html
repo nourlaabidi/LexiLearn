@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+<body>
+    {% block content %}
+    <div>
+        
+        <form action="#" method="post">
+            {% csrf_token %}
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" required><br><br>
+            
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required><br><br>
+            
+            <label for="is_admin">Administrateur :</label>
+            <input type="checkbox" id="is_admin" name="is_admin" ><br><br>
+            
+            <label for="is_doctor">Médecin :</label>
+            <input type="checkbox" id="is_doctor" name="is_doctor" ><br><br>
+            
+            <button type="submit">login</button>
+        </form>
+    </div>
+    {% endblock %}
+</body>
