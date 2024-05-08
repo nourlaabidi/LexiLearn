@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+<body>
+    {% block content %}
+        {% if request.user.is_active and not request.user.is_staff %}
+            <h1>Welcome child {{ request.user }}!</h1>
+        {% elif request.user.is_staff %}
+            <h1>Oops {{ request.user }}, what are you doing here!</h1>
+        {% endif %}
+        
+    {% endblock %}
+</body>

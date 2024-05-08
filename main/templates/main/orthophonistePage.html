@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+<body>
+    {% block content %}
+    <h1>Hello </h1>
+    <form action="{% url 'registerOrthophoniste' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Register</button>
+    </form>
+    <form action="{% url 'loginPage' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">login</button>
+    </form>
+    {% endblock %}
+</body>

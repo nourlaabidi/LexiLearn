@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+<body>
+    {% block content %}
+        {% if request.user.is_staff %}
+            <h1>Welcome Doctor {{ request.user }}!</h1>
+            
+            {% if members %}
+            <ul>
+                <h1>Your group</h1>
+                {% for m in members %}
+                    <li>{{ m }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Your group is empty.</p>
+            {% endif %}
+            
+        {% elif request.user.is_active %}
+            <h1>Oops {{ request.user }}, what are you doing here!</h1>
+        {% endif %}
+        <!--ken yheb yajouti user wala kn yheb yfasakh user wala kn yheb yra l users li andou-->
+        <form action="{% url 'createChild' %}" method="GET">
+            {% csrf_token %}
+            <button type="submit">create child</button>
+        </form>
+        <!-- partie taatih les users li mawjoudin fel group mteeou-->
+    {% endblock %}
+</body>

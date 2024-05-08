@@ -3,13 +3,13 @@
     {% block content %}
     <h1>Hello {{request.user}}!</h1>
     <h1> Who are you ?: </h1>
-    <form action="{% url 'loginOrthophoniste' %}" method="post">
+    <form action="{% url 'OrthophonistePage' %}" method="post">
         {% csrf_token %}
         <button type="submit">Orthophoniste</button>
     </form>
-    <form action="{% url 'loginPatient' %}" method="post">
+    <form action="{% url 'loginPage' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Patient</button>
+        <button type="submit">child</button>
     </form>
     {% endblock %}
 </body>
