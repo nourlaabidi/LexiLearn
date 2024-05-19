@@ -1,15 +1,34 @@
 {% extends 'main/base.html' %}
 <body>
     {% block content %}
-    <h1>Hello {{request.user}}!</h1>
-    <h1> Who are you ?: </h1>
-    <form action="{% url 'OrthophonistePage' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Orthophoniste</button>
-    </form>
-    <form action="{% url 'loginPage' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">child</button>
-    </form>
+    <div class="container tm-mt-big tm-mb-big">
+        <div class="row">
+          <div class="col-6 mx-auto tm-login-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <h2 class="tm-block-title mb-4">Hello ! who are you </h2>
+                </div>
+              </div>
+              <form action="{% url 'loginPage' %}" method="post">
+                {% csrf_token %}
+                    <div class="form-group mt-4">
+                      <button type="submit" class="bouton btn-warning text-white btn-block text-uppercase">Orthophoniste </button>
+                    </div>
+                    
+              </form>
+              <form action="{%  url 'loginPageChild' %}" method="post">
+                {% csrf_token %}
+                    <div class="form-group mt-4">
+                      <button type="submit" class="bouton btn-warning text-white btn-block text-uppercase ">child </button>
+                    </div>
+                    
+              </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endblock %}
 </body>

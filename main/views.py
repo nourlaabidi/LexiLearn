@@ -14,20 +14,34 @@ def home(request):
         elif request.user.is_active:
             return redirect('welcomeC')
     return render(request, "main/home.html")
-
+def test(request):
+    return render(request,"main/test.html")
 def welcomeO(request):
     actualGroup=Group.objects.get(owner=request.user)
     members=actualGroup.members.all()
-    return render(request,"main/welcomePageOrthophoniste.html" ,{'members':members})
+    return render(request, 'main/welcomePageOrthophoniste.html',{'members':members, 'actualGroup' : actualGroup})
+def searchUser(request):
+    if request.method == 'GET':
+        search_query = request.GET.get('search_query')
+        if search_query:
+            group=Group.objects.get(owner=request.user)
+            users = group.members.filter(username__icontains=search_query)
+        else:
+            users = []
+        return render(request, 'main/welcomePageOrthophoniste.html', {'users': users, 'query': search_query})
+    return render(request, 'main/welcomePageOrthophoniste.html' )
+        
 def welcomeC(request):
     return render(request,"main/welcomePageChild.html")
         
-def OrthophonistePage(request):
-    return render(request,"main/orthophonistePage.html")
+
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('welcomeP')
+        if user.is_staff:
+            return redirect('welcomeO') 
+        elif user.is_active:
+            return redirect('welcomeC')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -42,39 +56,49 @@ def loginPage(request):
                 return redirect('welcomeC')  # Rediriger vers la page spécifique pour les orthophonistes
             else:
                 messages.error(request, 'Votre compte est désactivé.')
-        else:
-            messages.error(request, 'Nom d\'utilisateur ou mot de passe invalide.')
+        
 
     return render(request, "main/loginPage.html") 
+
+def loginPageChild(request):
+    if request.user.is_authenticated: 
+        if user.is_active and user.is_staff==False:
+            return redirect('welcomeC')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password) 
+        if user is not None:
+            if user.is_active and user.is_staff==False:
+                login(request, user)
+                return redirect('welcomeC')  # Rediriger vers la page spécifique pour les orthophonistes
+            else:
+                messages.error(request, 'Votre compte est désactivé.')
+
+    return render(request, "main/loginPageChild.html") 
 
 
 def registerOrthophoniste(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        if username and password:
             # Création d'un utilisateur de type Doctor
-            doctor = User.objects.create_user(username=username, password=password, is_staff=True)
+            doctor = User.objects.create_user(username=username, password=password,email=email, is_staff=True)
             # Création d'un groupe
             Group.objects.create(owner=doctor)
             # Association de l'utilisateur au groupe
             
             # Redirection vers une page de bienvenue après l'enregistrement
-            return redirect('welcomeO')
+            return redirect('home')
         else:
             # Gestion des erreurs du formulaire
-            messages.error(request, 'Il y a des erreurs dans le formulaire.')
-    else:
-        # Création d'une instance de formulaire vide pour l'affichage initial
-        form = RegisterForm()
+            messages.error(request, 'Veuillez fournir un nom d\'utilisateur et un mot de passe valides.')
     # Rendu du formulaire dans le template avec les données appropriées
-    return render(request, "main/register.html", {'form': form})
+    return render(request, "main/register.html")
 
-'''def show_members(request):
-    actualGroup=Group.objects.get(owner=request.user)
-    members=actualGroup.members.all()
-    return render(request,"main/welcomePageOrthiphoniste.html" ,{members:members})'''
+
 def create_child(request):
     if request.method == 'POST':
         if request.user.is_staff:
@@ -98,22 +122,9 @@ def create_child(request):
         form = RegisterForm()
     # Rendu du formulaire dans le template avec les données appropriées
     return render(request, "main/register.html", {'form': form})
-def manage_users(request):
+def DeleteChild(request):
     if request.method == 'POST':
-        if request.user.is_staff:
-            form = RegisterForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password']
-                User.objects.create_user(username=username, password=password, is_active=True)
-                return JsonResponse({'message': 'Utilisateur créé avec succès!'}, status=201)
-            else:
-                return JsonResponse({'message': 'Il y a des erreurs dans le formulaire.', 'errors': form.errors}, status=400)
-        else:
-            return JsonResponse({'message': 'Vous n\'avez pas la permission de créer un utilisateur.'}, status=403)
-    elif request.method == 'DELETE':
-        if request.user.is_staff:
-            username = request.GET.get('username')
+            username = request.POST.get('username')
             if username:
                 try:
                     user = User.objects.get(username=username)
@@ -123,8 +134,7 @@ def manage_users(request):
                     return JsonResponse({'message': 'L\'utilisateur spécifié n\'existe pas.'}, status=404)
             else:
                 return JsonResponse({'message': 'Veuillez fournir un nom d\'utilisateur à supprimer.'}, status=400)
-        else:
-            return JsonResponse({'message': 'Vous n\'avez pas la permission de supprimer un utilisateur.'}, status=403)
+        
     else:
         return JsonResponse({'message': 'Méthode non autorisée'}, status=405)
         

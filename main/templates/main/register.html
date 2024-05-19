@@ -1,11 +1,54 @@
 {% extends 'main/base.html' %}
-<body>
-    {% block content %}
-    <h1>Register</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
-    {% endblock %}
+
+{% block content %}
+<div class="container tm-mt-big tm-mb-big">
+    <div class="row">
+        <div class="col-6 mx-auto tm-login-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        {%if request.user.is_staff%}
+                            <h2 class="tm-block-title mb-4"> Add child</h2>
+                        {%else%}
+                            <h2 class="tm-block-title mb-4"> Register</h2>
+                        {%endif%}
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <form method="post" class="tm-login-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input name="username" type="text" class="input validate" id="username" required>
+                            </div>
+        
+                            <div class="form-group mt-3">
+                                <label for="email">Email:</label>
+                                <input name="email" type="email" class="input validate" id="email" required>
+                            </div>
+                            
+                            <div class="form-group mt-3">
+                                <label for="password">Password:</label>
+                                <input name="password" type="password" class="input validate" id="password" required>
+                            </div>
+                            {%if request.user.is_staff%}
+                                <div class="form-group mt-4">
+                                    <button type="submit" class="bouton btn-warning text-white btn-block text-uppercase">Create child</button>
+                                </div>
+                            {%else%}
+                                <div class="form-group mt-4">
+                                    <button type="submit" class="bouton btn-warning text-white btn-block text-uppercase">Register</button>
+                                </div>
+                            {%endif%}
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 </body>

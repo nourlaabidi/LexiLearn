@@ -2,27 +2,133 @@
 <body>
     {% block content %}
         {% if request.user.is_staff %}
-            <h1>Welcome Doctor {{ request.user }}!</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <p class="text-white mt-5 mb-5">Welcome Doctor <b>{{ request.user }}!</b></p>
+                    </div>
+                </div>
+                <!-- row -->
+                <div class="row tm-content-row">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                        <div class="tm-bg-primary-dark tm-block">
+                            <h2 class="tm-block-title">Latest Hits</h2>
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                        <div class="tm-bg-primary-dark tm-block">
+                            <h2 class="tm-block-title">Performance</h2>
+                            <canvas id="barChart"></canvas>
+                            
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                        <div class="tm-bg-primary-dark tm-block tm-block-taller">
+                            <h2 class="tm-block-title">Age</h2>
+                            <div id="pieChartContainer">
+                                <canvas id="pieChart" class="chartjs-render-monitor" width="200" height="200"></canvas>
+                            </div>                        
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                        <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
+                            <h2 class="tm-block-title">Notification List</h2>
+                            <div class="tm-notification-items">
+                                
+                                
+                                
+                                
+                
+                            </div>
+                        </div>
+                    </div>
+                    
+            <div class="col-12 tm-block-col">
+                <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="tm-block-title mb-0">My group</h2>
+                        <form action="{% url 'createChild' %}" method="GET">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning text-white rounded-circle">
+                                <i class="bi bi-person-plus-fill"></i> <!-- Bootstrap icon for adding a user -->
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div  class="input-group mb-4" data-mdb-input-init>
+                        <form action="{% url 'searchUser' %}" method="get" class="w-100">
+                            <div class="d-flex mb-4">
+                                <input type="text" class="form-control me-2" placeholder="Search for users..." aria-label="Search" name="search_query" value="{{ search_query }}">
+                                <button class="btn btn-warning text-white" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">child id</th>
+                                <th scope="col">username</th>
+                                <th scope="col">status</th>
+                                <th scope="col">START DATE</th>
+                                <th scope="col">last joined</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    {% if users %} 
+                        {% for u in users %}  
+                            <tr>
+                                <th scope="row"><b>{{actualGroup.id}}{{u.id}}</b></th>
+                                <td><b>{{ u.username }} </b></td>
+                                <td>
+                                    <div class="tm-status-circle moving"></div>Moving
+                                </td>
+                                <td><b>{{ u.date_joined }}</b></td>
+                                <td><b>{{ u.last_login }}</b></td>
+                                <td> <b><form action="{% url 'welcomeO' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="username" value="{{ u.username }}">
+                                    <button type="submit" class="btn btn-danger rounded-circle">
+                                        <i class="bi bi-trash"></i> <!-- Bootstrap icon for delete -->
+                                    </button>
+                                </form></b></td>
+                            </tr> 
+                        {% endfor%}
+                    {% elif members %}
+                    
+                        {% for m in members %}
+                            <tr>
+                                <th scope="row"><b>{{actualGroup.id}}{{m.id}}</b></th>
+                                <td><b>{{ m.username }} </b></td>
+                                <td>
+                                    <div class="tm-status-circle moving"></div>Moving
+                                </td>
+                                <td><b>{{ m.date_joined }}</b></td>
+                                <td><b>{{ m.last_login }}</b></td>
+                                <td> <b>
+                                    <form action="{% url 'DeleteChild' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="username" value="{{ m.username }}">
+                                        <button type="submit" class="btn btn-danger rounded-circle">
+                                            <i class="bi bi-trash"></i> <!-- Bootstrap icon for delete -->
+                                        </button>
+                                    </form>
+                                </b>
+                                </td>
+                            </tr>
+                        {%endfor%} 
+                        </tbody>
+                    {% else %}
+                    <p>Your group is empty.</p>
+                    {% endif %}
+                    </table>
+                </div>
+            </div>
             
-            {% if members %}
-            <ul>
-                <h1>Your group</h1>
-                {% for m in members %}
-                    <li>{{ m }}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Your group is empty.</p>
-            {% endif %}
             
         {% elif request.user.is_active %}
             <h1>Oops {{ request.user }}, what are you doing here!</h1>
         {% endif %}
-        <!--ken yheb yajouti user wala kn yheb yfasakh user wala kn yheb yra l users li andou-->
-        <form action="{% url 'createChild' %}" method="GET">
-            {% csrf_token %}
-            <button type="submit">create child</button>
-        </form>
-        <!-- partie taatih les users li mawjoudin fel group mteeou-->
     {% endblock %}
 </body>
