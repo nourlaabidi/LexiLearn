@@ -155,5 +155,27 @@ def DeleteChild(request):
 def logoutPage(request):
     logout(request)
     return redirect('home')
-
+def age_distribution_view(request):
+    users = User.objects.all()
+    
+    age_intervals = {
+        "6-10": 0,
+        "10-14": 0,
+        "+14": 0
+    }
+    
+    for user in users:
+        age = user.age
+        if age is not None:
+            if 6 <= age <= 10:
+                age_intervals["6-10"] += 1
+            elif 10 < age <= 14:
+                age_intervals["10-14"] += 1
+            elif age > 14:
+                age_intervals["+14"] += 1
+    
+    context = {
+        'age_intervals': age_intervals
+    }
+    return render(request, 'base.html', context)
 #@login_required(login_required='/login')
