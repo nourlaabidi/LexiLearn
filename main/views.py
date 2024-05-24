@@ -4,14 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm
-from .models import Group
+from .models import Group, Child
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.is_staff:
+        if request.user.is_staff and request.user.is_superuser==False:
             return redirect('welcomeO')
-        elif request.user.is_active:
+        elif request.user.is_active and request.user.is_superuser==False :
             return redirect('welcomeC')
     return render(request, "main/home.html")
 def test(request):
@@ -102,26 +101,39 @@ def registerOrthophoniste(request):
 def create_child(request):
     if request.method == 'POST':
         if request.user.is_staff:
-            form = RegisterForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password']
-                User.objects.create_user(username=username, password=password, is_active=True)
-                child=User.objects.get(username=username)
-                grp=Group.objects.get(owner=request.user)
-                grp.members.add(child)
-                grp.save()
-                
-                return JsonResponse({'message': 'Utilisateur créé avec succès!'}, status=201)
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            date_of_birth = request.POST.get('date_of_birth')
+            phone_number = request.POST.get('phone_number')
+
+            if username and password:
+                try:
+                    # Créer l'utilisateur
+                    user = User.objects.create_user(username=username, password=password)
+                    child=User.objects.get(username=username)
+                    # Créer l'enfant
+                    Child.objects.create(
+                        user=user,
+                        date_of_birth=date_of_birth,
+                        phone_number=phone_number
+                    )
+                    # Associer l'enfant au groupe
+                    group = Group.objects.get(owner=request.user)
+                    group.members.add(child)
+                    group.save()
+                    messages.success(request, 'Message de réussite!')
+                    return redirect('home')
+                except Exception as e:
+                    return JsonResponse({'message': 'Erreur lors de la création de l\'utilisateur.', 'error': str(e)}, status=500)
             else:
-                return JsonResponse({'message': 'Il y a des erreurs dans le formulaire.', 'errors': form.errors}, status=400)
+                return JsonResponse({'message': 'Certains champs requis sont manquants.'}, status=400)
         else:
             return JsonResponse({'message': 'Vous n\'avez pas la permission de créer un utilisateur.'}, status=403)
-    else:
-        # Création d'une instance de formulaire vide pour l'affichage initial
-        form = RegisterForm()
-    # Rendu du formulaire dans le template avec les données appropriées
-    return render(request, "main/register.html", {'form': form})
+    return render(request, "main/register.html")
+def accounts(request):
+    actualGroup=Group.objects.get(owner=request.user)
+    members=actualGroup.members.all()
+    return render(request, 'main/accounts.html',{'members':members, 'actualGroup' : actualGroup})
 def DeleteChild(request):
     if request.method == 'POST':
             username = request.POST.get('username')

@@ -1,139 +1,103 @@
 {% load static %}
+<header class="navbar sticky-top flex-md-nowrap" style="height: 50px; padding: 0;">
+  <div class="col-md-3 col-lg-3 me-0 px-3 fs-6">
+      <a class="navbar-brand" href="{%  url 'home' %}">
+          <i class="bi-box"></i>
+          LEXILEARN
+      </a>
+  </div>
+</header>
 {%if request.user.is_authenticated %}
     {%if request.user.is_staff%}
-        {% block content %}
-        <div>
-            <nav class="navbar navbar-expand-xl">
-              <div class="container h-100">
-                <a class="navbar-brand" href="welcomePageOrthophoniste.html">
-                  <h1 class="tm-site-title mb-0">lexilearn</h1>
-                </a><!--hedhi bch nbadalha baed bl logo-->
-                <button
-                  class="navbar-toggler ml-auto mr-0"
-                  type="button"
-                  data-toggle="collapse"
-                  data-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  <i class="fas fa-bars tm-nav-icon"></i>
-                </button>
       
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav mx-auto h-100">
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <i class="fas fa-tachometer-alt"></i><br> Dashboard
-                        <span class="sr-only">(current)</span>
-                      </a>
-                    </li>
-                    
-                    <li class="nav-item ">
-                      <a
-                        class="nav-link"
-                        href="#"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <i class="far fa-file-alt"></i><br>
-                        <span> Reports </i> </span>
-                      </a>
-                      
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <i class="fas fa-users"></i><br> Accounts
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a
-                        class="nav-link "
-                        href="#"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <i class="fas fa-user"></i><br>
-                        <span> Profile </i> </span>
-                      </a>
-                      
-                    </li>
-                  </ul>
-                  <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link d-block" href="{% url 'logout' %}">
-                            {{request.user.username}}, <b>Logout</b>
-                        </a>
-                    </li>
-                 </ul>
+         
+{% block content %}
+    
+        <div class="container-fluid" >
+            <class class="row">
+                <nav id="sidebarMenu" class=" d-md-block sidebar collapse ">
+                    <div class="position-sticky py-4 px-3 sidebar-sticky">
+                        <ul class="nav flex-column h-100">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{%  url 'home' %}">
+                                    <i class="bi-house-fill me-2"></i>
+                                    Overview
+                                </a>
+                            </li>
+
+                            <li class="nav-item" style="margin-top: 10px;">
+                                <a class="nav-link" href="#">
+                                    <i class="far fa-file-alt"></i>
+                                    Reports </i> 
+                                </a>
+                            </li>
+
+                            <li class="nav-item" style="margin-top: 10px;">
+                                <a class="nav-link" href="{%  url 'accounts' %}">
+                                    <i class="fas fa-users"></i> Accounts
+                                </a>
+                            </li>
+
+                            <li class="nav-item" style="margin-top: 10px;">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-user"></i>
+                                     Profile 
+                                </a>
+                            </li>
+
+                
+                            <li class="nav-item border-top mt-auto pt-2" >
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                    <i class="bi-box-arrow-left me-2"></i>
+                                    {{request.user.username}}, <b>Logout</b>
+                                </a>
+                        
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                </class>
                 </div>
-              </div>
-            </nav>
-          </div>
-        {% endblock %}
+                
+
+{%endblock%}
+        
+        
 
     {% elif request.user.is_staff == False and request.user.is_active %}
-    <div>
-      <nav class="navbar navbar-expand-xl">
-        <div class="container h-100">
-          <a class="navbar-brand" href="welcomePagechild.html">
-            <h1 class="tm-site-title mb-0">lexilearn</h1>
-          </a><!--hedhi bch nbadalha baed bl logo-->
-          <button
-            class="navbar-toggler ml-auto mr-0"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="fas fa-bars tm-nav-icon"></i>
-          </button>
+    <div class="container-fluid" >
+      <class class="row">
+          <nav id="sidebarMenu" class=" d-md-block sidebar collapse ">
+              <div class="position-sticky py-4 px-3 sidebar-sticky">
+                  <ul class="nav flex-column h-100">
+                      <li class="nav-item" style="margin-top: 10px;">
+                          <a class="nav-link" href="wallet.html">
+                              <i class="far fa-file-alt"></i>
+                              Exercices </i> 
+                          </a>
+                      </li>
 
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto h-100">
-              
-              
-              <li class="nav-item ">
-                <a
-                  class="nav-link"
-                  href="#"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                  <i class="far fa-file-alt"></i><br>
-                  <span> Exercices </i> </span>
-                </a>
-                
-              </li>
-              
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link "
-                  href="#"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-user"></i><br>
-                  <span> Profile </i> </span>
-                </a>
-                
-              </li>
-            </ul>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                  <a class="nav-link d-block" href="{% url 'logout' %}">
-                      {{request.user.username}}, <b>Logout</b>
-                  </a>
-              </li>
-           </ul>
+                      
+
+                      <li class="nav-item" style="margin-top: 10px;">
+                          <a class="nav-link" href="setting.html">
+                              <i class="fas fa-user"></i>
+                               Profile 
+                          </a>
+                      </li>
+
+          
+                      <li class="nav-item border-top mt-auto pt-2" >
+                      <a class="nav-link" href="{% url 'logout' %}">
+                              <i class="bi-box-arrow-left me-2"></i>
+                              {{request.user.username}}, <b>Logout</b>
+                          </a>
+                  
+                      </li>
+                  </ul>
+              </div>
+          </nav>
+          </class>
           </div>
-        </div>
-      </nav>
-    </div>
     {% endif %}
 {% endif %}

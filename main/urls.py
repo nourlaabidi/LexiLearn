@@ -13,6 +13,7 @@ urlpatterns = [
     path('delete_child/', views.DeleteChild, name='DeleteChild'),
     path('search_child/', views.searchUser, name='searchUser'),
     path('test/', views.test, name='test'),
+    path('accounts/', views.accounts, name='accounts'),
     
     
 ]

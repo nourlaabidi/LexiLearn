@@ -9,10 +9,11 @@ https://templatemo.com/tm-524-product-admin
 html {
   font-size: 16px;
   overflow-x: hidden;
+  scrollbar-color: #4CAF50 #FFF;
 }
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
-  background-image: ('https://freepngimg.com/download/school/32055-2-kids-learning-transparent-background.png');
+  background-color: #0266c4;
   overflow-x: hidden;
 }
 a {
@@ -40,7 +41,6 @@ button:focus {
   color: #fff;
 }
 .navbar {
-  height: 100px;
   background-color: #567086;
   padding: 0;
 }
@@ -64,9 +64,7 @@ button:focus {
 }
 .tm-block {
   padding: 40px;
-  -webkit-box-shadow: 1px 1px 5px 0 #455c71;
-  -moz-box-shadow: 1px 1px 5px 0 #455c71;
-  box-shadow: 1px 1px 5px 0 #455c71;
+
   min-height: 350px;
   height: 100%;
   max-height: 450px;
@@ -85,6 +83,7 @@ button:focus {
 }
 .tm-block-scroll {
   overflow-y: scroll;
+
 }
 .tm-block-overflow {
   overflow: hidden;
@@ -92,7 +91,7 @@ button:focus {
 .tm-block-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: gray;
   margin-bottom: 30px;
 }
 .nav-link {
@@ -202,8 +201,7 @@ button:focus {
   font-size: 90%;
 }
 .table {
-  background-color: #50697f;
-  color: #fff;
+  color: gray;
   font-size: 85%;
   margin-bottom: 0;
 }
@@ -289,7 +287,7 @@ thead {
   box-shadow: 0 0 0 0.1rem rgb(180, 206, 233, 0.5);
 }
 .form-group label {
-  color: #fff;
+  color: gray;
   margin-bottom: 10px;
 }
 .tm-hide-sm {
@@ -358,7 +356,7 @@ thead {
 }
 .table td,
 .table th {
-  border-top: 1px solid #415a70;
+
   padding: 15px 25px;
   vertical-align: middle;
 }
@@ -556,15 +554,8 @@ input[type="checkbox"]:focus {
   width: 8px;
   height: 8px;
 }
-::-webkit-scrollbar-track {
-  background: #394f62;
-}
-::-webkit-scrollbar-thumb {
-  background: #6d8da6;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #8ab5d6;
-}
+
+
 
 .tm-footer-link {
   color: white;

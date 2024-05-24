@@ -5,49 +5,43 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <p class="text-white mt-5 mb-5">Welcome Doctor <b>{{ request.user }}!</b></p>
+                        <p class=" mt-5 mb-5" style="color: rgb(219, 86, 86); ">Welcome Doctor <b>{{ request.user }}!</b></p>
                     </div>
                 </div>
                 <!-- row -->
                 <div class="row tm-content-row">
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
-                        <div class="tm-bg-primary-dark tm-block">
-                            <h2 class="tm-block-title">Latest Hits</h2>
+                        <div class=" tm-block" style="background-color: white;border: none; box-shadow: none; border-radius: 10px;">
+                            <h2 class="tm-block-title" style="color:rgb(62, 121, 208)">Latest Hits</h2>
                             <canvas id="lineChart"></canvas>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
-                        <div class="tm-bg-primary-dark tm-block">
-                            <h2 class="tm-block-title">Performance</h2>
+                        <div class=" tm-block" style="background-color: white;border: none; box-shadow: none;border-radius: 10px;">
+                            <h2 class="tm-block-title" style="color:rgb(62, 121, 208)">Performance</h2>
                             <canvas id="barChart"></canvas>
                             
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
-                        <div class="tm-bg-primary-dark tm-block tm-block-taller">
-                            <h2 class="tm-block-title">Age</h2>
+                        <div class=" tm-block tm-block-taller" style="background-color: white;border: none; box-shadow: none;border-radius: 10px;">
+                            <h2 class="tm-block-title" style="color:rgb(62, 121, 208)">Age</h2>
                             <div id="pieChartContainer">
                                 <canvas id="pieChart" class="chartjs-render-monitor" width="200" height="200"></canvas>
                             </div>                        
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
-                        <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
-                            <h2 class="tm-block-title">Notification List</h2>
-                            <div class="tm-notification-items">
-                                
-                                
-                                
-                                
-                
-                            </div>
+                        <div class=" tm-block tm-block-taller tm-block-overflow" style="background-color: white;border: none; box-shadow: none;border-radius: 10px;">
+                            <h2 class="tm-block-title" style="color:rgb(62, 121, 208)">trafic</h2>
+                            <canvas id="trafficChart"></canvas>
                         </div>
                     </div>
                     
-            <div class="col-12 tm-block-col">
-                <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+            <div class="col-12 tm-block-col" >
+                <div class=" tm-block tm-block-taller tm-block-scroll" style="background-color: white; border: none; box-shadow: none;border-radius: 10px;">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="tm-block-title mb-0">My group</h2>
+                        <h2 class="tm-block-title mb-0" style="color: grey;">My group</h2>
                         <form action="{% url 'createChild' %}" method="GET">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-warning text-white rounded-circle">
@@ -64,8 +58,8 @@
                             </div>
                         </form>
                     </div>
-                    <table class="table">
-                        <thead>
+                    <table class="table"  >
+                        <thead style="background-color: white;color: grey; ">
                             <tr>
                                 <th scope="col">child id</th>
                                 <th scope="col">username</th>
@@ -78,7 +72,7 @@
                         <tbody>
                     {% if users %} 
                         {% for u in users %}  
-                            <tr>
+                            <tr  >
                                 <th scope="row"><b>{{actualGroup.id}}{{u.id}}</b></th>
                                 <td><b>{{ u.username }} </b></td>
                                 <td>

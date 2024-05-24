@@ -4,10 +4,10 @@
     <div class="container tm-mt-big tm-mb-big">
         <div class="row">
           <div class="col-6 mx-auto tm-login-col">
-            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="tm-bg-primary tm-block tm-block-h-auto"  style="background-color: white;border: none; box-shadow: none; border-radius: 10px; color: gray; ">
               <div class="row">
                 <div class="col-12 text-center">
-                  <h2 class="tm-block-title mb-4">Login</h2>
+                  <h1 class="tm-block-title " style="color:gray;">Login</h1>
                 </div>
               </div>
               <div class="row mt-2">
@@ -15,17 +15,17 @@
                   <form action="#" method="post" class="tm-login-form">
                     {% csrf_token %}
                     <div class="form-group">
-                      <label for="username">Nom d'utilisateur :</label>
+                      <label for="username"  style="color: gray;">Username</label>
                       <input
                         name="username"
                         type="text"
-                        class="input validate"
+                        class="input validate "
                         id="username"
                         required
                       />
                     </div>
                     <div class="form-group mt-3">
-                      <label for="password">Password</label>
+                      <label for="password"  style="color: gray;">Password</label>
                       <input
                         name="password"
                         type="password"
@@ -37,7 +37,7 @@
                     <div class="form-group mt-4">
                       <button
                         type="submit"
-                        class="bouton btn-warning text-white btn-block text-uppercase"
+                        class="bouton btn-warning  btn-block text-uppercase text-white"
                       >
                         Login
                       </button>
@@ -45,7 +45,7 @@
                     
                   </form>
                     <div class="text-center mt-4   ">
-                      <p class="text-white">Vous n'avez pas de compte ?  <a href="{% url 'registerOrthophoniste' %}"> Créez-en un ici</a></span></p>
+                      <p class="">Vous n'avez pas de compte ?  <a href="{% url 'registerOrthophoniste' %}"> Créez-en un ici</a></span></p>
                     </div>
                 </div>
               </div>

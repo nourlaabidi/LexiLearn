@@ -10,24 +10,49 @@
         <link rel="stylesheet" href="{% static 'templatemo-style.css'%}">
         <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
         <link rel="stylesheet" href="{% static 'fontawesome.min.css'%}">
+        <link rel="stylesheet" href="{% static 'apexcharts.css'%}">
+        <link rel="stylesheet" href="{% static 'tooplate-mini-finance.css'%}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
         <style>
+            img{
+                height: 200px;
+            }
             .bouton{
             height:50px;
             border:1px solid #ffc107
             }
-            .input{display:block;width:100%;height:calc(2.25rem + 2px);padding:.375rem .75rem;font-size:1rem;line-height:1.5;color:#fff;background-color:#54657d;background-clip:padding-box;border:1px solid#54657d;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}@media screen and (prefers-reduced-motion:reduce){.input{transition:none}}
+            .input{display:block;width:100%;height:calc(2.25rem + 2px);padding:.375rem .75rem;font-size:1rem;line-height:1.5;color:gray;background-color:rgb(244, 240, 240);background-clip:padding-box;border:none;border-radius: 5px;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}@media screen and (prefers-reduced-motion:reduce){.input{transition:none}}
+            body{
+                background-color: rgb(244, 240, 240);
+            }
+            .table{
+                color: gray;
+            }
+            html {
+                font-size: 16px;
+                overflow-x: hidden;
+                scrollbar-color: gray #FFF;
+                }
         </style>
     </head>
 <body >
     {% include 'main/navbar.html' %}
     {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li></li>{{ message }}
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% for message in messages %}
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="mr-auto">Message</strong>
+                <small class="text-muted">maintenant</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
     {% block content %}
     {% endblock %}
     
@@ -38,21 +63,26 @@
     <script src="{% static 'Chart.min.js' %}"></script>
     <script src="{% static 'tooplate-scripts.js' %}"></script>
     <script>
-        Chart.defaults.global.defaultFontColor = 'white';
+        Chart.defaults.global.defaultFontColor = 'grey';
         let ctxLine, ctxBar, ctxPie;
         let optionsLine, optionsBar, optionsPie;
         let configLine, configBar, configPie;
         let lineChart, barChart, pieChart;
+        
         $(function () {
             drawPieChart();
             drawBarChart();
-            drawLineChart(); 
+            drawLineChart();
+            drawTrafficBarChart();
+            
             $(window).resize(function () {
                 updateLineChart();
-                updateBarChart();                
+                updateBarChart();
+                drawTrafficBarChart();
             });
         });
-        //pourcentage d'age des enfants
+        
+        // pourcentage d'age des enfants
         function drawPieChart() {
             if ($("#pieChart").length) {
                 var chartHeight = 300;
@@ -98,147 +128,171 @@
                 pieChart = new Chart(ctxPie, configPie);
             }
         }
-        //performance des enfants (in progress/finished kol chhar)
+        
+        // performance des enfants (in progress/finished kol chhar)
         function drawBarChart() {
             if ($("#barChart").length) {
                 ctxBar = document.getElementById("barChart").getContext("2d");
 
                 optionsBar = {
-                responsive: true,
-                scales: {
-                    yAxes: [
-                    {
-                        barPercentage: 0.4,
-                        ticks: {
-                        beginAtZero: true
-                        },
-                        scaleLabel: {
-                        display: true,
-                        labelString: "performance"
-                        }
+                    responsive: true,
+                    scales: {
+                        yAxes: [
+                            {
+                                barPercentage: 0.4,
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "performance"
+                                }
+                            }
+                        ]
                     }
-                    ]
-                }
                 };
 
-                optionsBar.maintainAspectRatio =
-                $(window).width() < width_threshold ? false : true;
+                optionsBar.maintainAspectRatio = $(window).width() < 768 ? false : true;
 
-                /**
-                 * COLOR CODES
-                 * Red: #F7604D
-                 * Aqua: #4ED6B8
-                 * Green: #A8D582
-                 * Yellow: #D7D768
-                 * Purple: #9D66CC
-                 * Orange: #DB9C3F
-                 * Blue: #3889FC
-                 */
-                const labels = ["Février", "Mars", "Avril",];
+                const labels = ["Février", "Mars", "Avril"];
                 const dataInProgress = [33, 28, 58]; // Données pour chaque mois
-                const dataCompleted = [40,49, 38];
+                const dataCompleted = [40, 49, 38];
                 configBar = {
-                type: "horizontalBar",
-                data: {
-                    labels: labels,
-                    datasets: [
-                    {
-                        label: "En cours",
-                        data: dataInProgress, // Tableau des données en cours
-                        backgroundColor: "#F7604D", // Rouge pour les tâches en cours
-                        borderWidth: 0
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "En cours",
+                                data: dataInProgress, // Tableau des données en cours
+                                backgroundColor: "#F7604D", // Rouge pour les tâches en cours
+                                borderWidth: 0
+                            },
+                            {
+                                label: "Terminé",
+                                data: dataCompleted, // Tableau des données terminées
+                                backgroundColor: "#4ED6B8", // Vert pour les tâches terminées
+                                borderWidth: 0
+                            }
+                        ]
                     },
-                    {
-                        label: "Terminé",
-                        data: dataCompleted, // Tableau des données terminées
-                        backgroundColor: "#4ED6B8", // Vert pour les tâches terminées
-                        borderWidth: 0
-                    }
-                    ]
-                },
-                options: optionsBar
+                    options: optionsBar
                 };
 
                 barChart = new Chart(ctxBar, configBar);
             }
-            }
+        }
+        
         function updateBarChart() {
             if (barChart) {
                 barChart.options = optionsBar;
                 barChart.update();
             }
         }
+        
         function drawLineChart() {
             if ($("#lineChart").length) {
                 ctxLine = document.getElementById("lineChart").getContext("2d");
                 optionsLine = {
-                scales: {
-                    yAxes: [
-                    {
-                        scaleLabel: {
-                        display: true,
-                        labelString: "Age"
-                        }
+                    scales: {
+                        yAxes: [
+                            {
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Age"
+                                }
+                            }
+                        ]
                     }
-                    ]
-                }
                 };
 
-                // Set aspect ratio based on window width
-                optionsLine.maintainAspectRatio =
-                $(window).width() < width_threshold ? false : true;
+                optionsLine.maintainAspectRatio = $(window).width() < 768 ? false : true;
 
                 configLine = {
-                type: "line",
-                data: {
-                    labels: [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July"
-                    ],
-                    datasets: [
-                    {
-                        label: "+14 ans",
-                        data: [88, 68, 79, 57, 50, 55, 70],
-                        fill: false,
-                        borderColor: "rgb(75, 192, 192)",
-                        cubicInterpolationMode: "monotone",
-                        pointRadius: 0
+                    type: "line",
+                    data: {
+                        labels: [
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July"
+                        ],
+                        datasets: [
+                            {
+                                label: "+14 ans",
+                                data: [88, 68, 79, 57, 50, 55, 70],
+                                fill: false,
+                                borderColor: "rgb(75, 192, 192)",
+                                cubicInterpolationMode: "monotone",
+                                pointRadius: 0
+                            },
+                            {
+                                label: "10-14 ans",
+                                data: [33, 45, 37, 21, 55, 74, 69],
+                                fill: false,
+                                borderColor: "rgba(255,99,132,1)",
+                                cubicInterpolationMode: "monotone",
+                                pointRadius: 0
+                            },
+                            {
+                                label: "6-10 ans",
+                                data: [44, 19, 38, 46, 85, 66, 79],
+                                fill: false,
+                                borderColor: "rgba(153, 102, 255, 1)",
+                                cubicInterpolationMode: "monotone",
+                                pointRadius: 0
+                            }
+                        ]
                     },
-                    {
-                        label: "10-14 ans",
-                        data: [33, 45, 37, 21, 55, 74, 69],
-                        fill: false,
-                        borderColor: "rgba(255,99,132,1)",
-                        cubicInterpolationMode: "monotone",
-                        pointRadius: 0
-                    },
-                    {
-                        label: "6-10 ans",
-                        data: [44, 19, 38, 46, 85, 66, 79],
-                        fill: false,
-                        borderColor: "rgba(153, 102, 255, 1)",
-                        cubicInterpolationMode: "monotone",
-                        pointRadius: 0
-                    }
-                    ]
-                },
-                options: optionsLine
+                    options: optionsLine
                 };
 
                 lineChart = new Chart(ctxLine, configLine);
             }
+        }
+        
+        function updateLineChart() {
+            if (lineChart) {
+                lineChart.options = optionsLine;
+                lineChart.update();
             }
-            function updateLineChart() {
-                if (lineChart) {
-                    lineChart.options = optionsLine;
-                    lineChart.update();
-                }
-                }
+        }
+        
+        function drawTrafficBarChart() {
+            if ($("#trafficChart").length) {
+                const ctx = document.getElementById('trafficChart').getContext('2d');
+                
+                // Données statiques
+                const labels = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin"];
+                const data = [120, 150, 300, 500, 250, 400];
+
+                const trafficChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Nombre de visites',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+
     </script>
 </body>
 </html>

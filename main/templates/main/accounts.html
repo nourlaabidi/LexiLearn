@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+<body>
+    {% block content %}
+    <div class="tm-block-col" >
+        <div  style="background-color: white; border: none; box-shadow: none;border-radius: 10px; margin-left: 200px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="tm-block-title mb-0" style="color: grey;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My group</h2>
+                <form action="{% url 'createChild' %}" method="GET">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning text-white rounded-circle">
+                        <i class="bi bi-person-plus-fill"></i> <!-- Bootstrap icon for adding a user -->
+                    </button>
+                </form>
+            </div>
+            
+            <div  class="input-group mb-4" data-mdb-input-init>
+                <form action="{% url 'searchUser' %}" method="get" class="w-100">
+                    <div class="d-flex mb-4">
+                        <input type="text" class="form-control me-2" placeholder="Search for users..." aria-label="Search" name="search_query" value="{{ search_query }}">
+                        <button class="btn btn-warning text-white" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
+            <table class="table"  >
+                <thead style="background-color: white;color: grey; ">
+                    <tr>
+                        <th scope="col">child id</th>
+                        <th scope="col">username</th>
+                        <th scope="col">status</th>
+                        <th scope="col">START DATE</th>
+                        <th scope="col">last joined</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% if users %} 
+                {% for u in users %}  
+                    <tr  >
+                        <th scope="row"><b>{{actualGroup.id}}{{u.id}}</b></th>
+                        <td><b>{{ u.username }} </b></td>
+                        <td>
+                            <div class="tm-status-circle moving"></div>Moving
+                        </td>
+                        <td><b>{{ u.date_joined }}</b></td>
+                        <td><b>{{ u.last_login }}</b></td>
+                        <td> <b><form action="{% url 'welcomeO' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="username" value="{{ u.username }}">
+                            <button type="submit" class="btn btn-danger rounded-circle">
+                                <i class="bi bi-trash"></i> <!-- Bootstrap icon for delete -->
+                            </button>
+                        </form></b></td>
+                    </tr> 
+                {% endfor%}
+            {% elif members %}
+            
+                {% for m in members %}
+                    <tr>
+                        <th scope="row"><b>{{actualGroup.id}}{{m.id}}</b></th>
+                        <td><b>{{ m.username }} </b></td>
+                        <td>
+                            <div class="tm-status-circle moving"></div>Moving
+                        </td>
+                        <td><b>{{ m.date_joined }}</b></td>
+                        <td><b>{{ m.last_login }}</b></td>
+                        <td> <b>
+                            <form action="{% url 'DeleteChild' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="username" value="{{ m.username }}">
+                                <button type="submit" class="btn btn-danger rounded-circle">
+                                    <i class="bi bi-trash"></i> <!-- Bootstrap icon for delete -->
+                                </button>
+                            </form>
+                        </b>
+                        </td>
+                    </tr>
+                {%endfor%} 
+                </tbody>
+            {% else %}
+            <p>Your group is empty.</p>
+            {% endif %}
+            </table>
+        </div>
+    </div>
+    {%endblock%}
+</body>
