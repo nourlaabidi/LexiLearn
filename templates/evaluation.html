@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Evaluate Recording</title>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/styles.css' %}"
+    />
+    <script>
+      function saveAudio(audioId) {
+        fetch(`/save_audio/${audioId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        }).then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  alert('Audio saved successfully!');
+                  window.location.href = '/';
+              } else {
+                  alert(data.error);
+              }
+          });
+      }
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+    </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Evaluate</h1>
+    <div class="container">
+          <h3>Evaluation: </h3>
+          <div class="circle">
+              <div class="fill" id="fill"></div>
+          </div>
+          <div class="score-text" id="scoreText">0%</div>
+    </div>
+    <div class="container">
+      <audio controls>
+        <source src="{{ audio_url }}" type="audio/wav">
+        Your browser does not support the audio element.
+      </audio>
+      <div class="button-group">
+        <button onclick="saveAudio('{{ audio_id }}')">Save</button>
+        <button onclick="window.location.href='/record/'">Record Again</button>
+      </div>
+    </div>
+    </div>
+    <script>
+      var score = {{ score }};
+      /*score = Math.max(0, Math.min(score, 100));
+      var progressBarWidth = score + '%';
+      document.getElementById('progressBar').style.width = progressBarWidth;
+      document.getElementById('scoreText').innerText = score + '%';*/
+      // Set the score value (between 0 and 100)
+      const fill = document.getElementById('fill');
+      const scoreText = document.getElementById('scoreText');
+      fill.style.clipPath = `circle(${score}% at 50% 50%)`;
+      scoreText.textContent = `${score}%`;
+  </script>
+</body>
+</html>
