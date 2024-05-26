@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Listen Audio</title>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'styles.css' %}"
+    />
+    <style>
+        p, audio {
+            display: inline;
+            margin-right: 10px; /* Add some space between elements */
+        }
+    </style>
+</head>
+<body>
+    <div class="container2">
+        <div >
+            <h1>Recordings : </h1>
+            {% for audio_file in audio_files %}
+                <p>Audio number  {{ forloop.counter }} : {{audio_file.score}}%  </p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

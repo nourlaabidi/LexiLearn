@@ -64,11 +64,11 @@
                         <td><b>{{ m.date_joined }}</b></td>
                         <td><b>{{ m.last_login }}</b></td>
                         <td> <b>
-                            <form action="{% url 'DeleteChild' %}" method="post">
+                            <form action="{% url 'profile' %}" method="get">
                                 {% csrf_token %}
                                 <input type="hidden" name="username" value="{{ m.username }}">
-                                <button type="submit" class="btn btn-danger rounded-circle">
-                                    <i class="bi bi-trash"></i> <!-- Bootstrap icon for delete -->
+                                <button type="submit" class="btn btn-warning rounded-circle">
+                                    <i class="fas fa-chevron-down text-white"></i>
                                 </button>
                             </form>
                         </b>

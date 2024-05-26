@@ -722,5 +722,32 @@ input[type="checkbox"]:focus {
 .bouton{
   height:600px;
 }
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.card-header {
+  background: #007bff;
+  color: white;
+  padding: 15px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.card-header h1 {
+  margin: 0;
+}
+
+.card-body p {
+  margin: 10px 0;
+}
 
 

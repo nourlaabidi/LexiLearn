@@ -1,0 +1,80 @@
+/* styles.css */
+
+/* Center the container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Make the container fill the entire viewport vertically */
+    background-color: #FFD06A;
+    padding: 10px; /* Add padding around the buttons */
+    margin: 20px;
+    flex-direction: column; 
+}
+
+/* Style the h1 element */
+h1 {
+    margin-bottom: 20px; /* Add some space below the heading */
+    color:rgb(7, 23, 14)
+}
+
+/* Style the buttons */
+button {
+    padding: 10px 20px; /* Add padding around the buttons */
+    margin: 10px; /* Add margin around the buttons */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border: none; /* Remove default button border */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    background-color: #FF9F2F; /* Set button background color */
+    color: #000000; /* Set button text color */
+}
+
+button:disabled {
+    background-color: #97968b; /* Change background color of disabled buttons */
+    cursor: not-allowed; /* Change cursor to not-allowed for disabled buttons */
+}
+
+/* Style the audio element */
+#audioPlayback {
+    margin-top: 20px; /* Add some space above the audio element */
+    width: 50%; /* Make the audio element fill the container width */
+}
+
+.listening {
+    background-color: #000000; /* Dark background color when listening */
+    color: #fff; /* Text color when listening */
+  }
+
+.container2{
+    display: flex;
+    /*-items: center;
+    justify-content: center;*/
+    flex-direction: column; 
+    background-color: #FFD06A;
+    margin: 10px;
+}
+
+.circle {
+    width: 200px;
+    height: 200px;
+    background-color: #ddd;
+    border-radius: 50%;
+    position:relative;
+}
+.fill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #ffae00;
+    clip-path: circle(50% at 50% 50%);
+    transform: rotate(90deg);
+    transition: clip-path 1s ease;
+}
+.score-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-top: -200px; /* Adjust position to center */
+    position: relative;
+}

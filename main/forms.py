@@ -1,8 +1,8 @@
 from django import forms
+from .models import AudioFile
 
-class RegisterForm(forms.Form):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
-       
-    
+class AudioFileForm(forms.ModelForm):
+    class Meta:
+        model = AudioFile
+        fields = ['name', 'audio']
     
