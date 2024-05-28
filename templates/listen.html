@@ -1,35 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta =charset="UTF-8">
-    <title>Listen Audio</title>
-    {% load static %}
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/styles.css' %}"
-    />
-    <style>
-        p, audio {
-            display: inline;
-            margin-right: 10px; /* Add some space between elements */
-        }
-    </style>
-</head>
+{% extends 'base.html' %}
+{%load static%}
 <body>
-    <div class="container2">
-        <div >
-            <h1>Recordings : </h1>
+    {% block content %}
+    <div class="main-content">
+        <div class="container">
+            <div ><h3>Level 1 / Word N°1:</h3></div>
+            <h3>Recordings : </h3>
             {% for audio_file in audio_files %}
-                <p>Audio number  {{ forloop.counter }} : {{audio_file.score}}%  </p>
-                <audio controls>
-                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
-                    Your browser does not support the audio element.
-                </audio>
-                <br>
+                {% if forloop.counter > 60 %}
+                    <p>The word number {{ forloop.counter|add:"-60" }} - The score : {{ audio_file.score }} %</p>
+                    <audio controls>
+                        <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
-
+    {% endblock %}
 </body>
-</html>

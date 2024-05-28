@@ -2,7 +2,7 @@
 import pronouncing
 import Levenshtein
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import AudioFile
+from .models import AudioFile, Word
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import speech_recognition as sr
@@ -88,7 +88,7 @@ def evaluate_page(request, audio_id):
     transcription_audio_enregistre = pronouncing.phones_for_word(voice2)
     # Comparaison de la similarité phonétique avec la distance de Levenshtein
     similarite = Levenshtein.distance(transcription_mot_attendu, transcription_audio_enregistre)
-    score=100-88 % 100
+    score=100-25 % 100
     audio_file.score=score
     audio_file.save()
     #score=similarite

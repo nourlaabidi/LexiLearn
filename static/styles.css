@@ -8,11 +8,9 @@
     justify-content: center;
     height: 100vh; /* Make the container fill the entire viewport vertically */
     background-color: #FFD06A;
+    padding: 10px; /* Add padding around the buttons */
     margin: 20px;
-    flex-direction: column;
-    margin-left: 50px;
-    margin-right:20px;
-    padding: 20px; 
+    flex-direction: column; 
 }
 
 /* Style the h1 element */
@@ -79,81 +77,4 @@ button:disabled {
     color: #333;
     margin-top: -200px; /* Adjust position to center */
     position: relative;
-}
-.navbar {
-    background-color: #333; /* Set your desired background color */
-    padding: 10px;
-  }
-  
-  .navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar li {
-    display: inline;
-  }
-  
-  .navbar a {
-    color: white; /* Set your desired text color */
-    text-decoration: none;
-    padding: 10px;
-  }
-  
-  .navbar a:hover {
-    background-color: #555; /* Set your desired hover color */
-  }
-
-  body {
-    display: flex;
-    margin: 10px;
-    font-family: Arial, sans-serif;
-}
-.navbar {
-    width: 60px;
-    background-color: #2c3e50;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 0px;
-    margin-top:20px;
-    height: 100vh;
-    position:fixed;
-}
-.navbar a {
-    margin: 20px 0;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    font-size: 24px;
-}
-.navbar a:hover {
-    background-color: #34495e;
-    border-radius: 50%;
-}
-.button-group {
-    display: flex;
-    gap: 10px;
-}
-.button-group button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.circle {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: conic-gradient(#4caf50 0%, #4caf50 75%, #dcdcdc 75%);
-}
-.circle .fill {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    clip-path: polygon(50% 50%, 0 0, 0 100%, 100% 100%, 100% 0);
 }
