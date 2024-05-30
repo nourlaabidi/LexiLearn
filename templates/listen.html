@@ -7,13 +7,44 @@
             <div ><h3>Level 1 / Word N°1:</h3></div>
             <h3>Recordings : </h3>
             {% for audio_file in audio_files %}
-                {% if forloop.counter > 60 %}
-                    <p>The word number {{ forloop.counter|add:"-60" }} - The score : {{ audio_file.score }} %</p>
-                    <audio controls>
-                        <source src="{{ audio_file.audio.url }}" type="audio/wav">
-                        Your browser does not support the audio element.
-                    </audio>
-                {% endif %}
+            {% if forloop.counter > 60 %}
+            {% if forloop.counter == 60 %}
+                <p>The Word : Important - The score : {{ audio_file.score }} %</p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+            {% if forloop.counter == 61 %}
+                <p>The Word : Become - The score : {{ audio_file.score }} %</p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+            {% if forloop.counter == 62 %}
+                <p>The Word : Protect - The score : {{ audio_file.score }} %</p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+            {% if forloop.counter == 63 %}
+                <p>The Word : Children - The score : {{ audio_file.score }} %</p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+            {% if forloop.counter == 64 %}
+                <p>The Word : Doctor - The score : {{ audio_file.score }} %</p>
+                <audio controls>
+                    <source src="{{ audio_file.audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+            {% endif %}
+        {% endif %}
+        
             {% endfor %}
         </div>
     </div>

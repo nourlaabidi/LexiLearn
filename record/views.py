@@ -69,6 +69,7 @@ def save_audio(request):
 
 def evaluate_page(request, audio_id):
     audio_file = get_object_or_404(AudioFile, id=audio_id)
+    words=Word.objects.all()
     #audio1= audio_file.audio.path
     print(audio_file.audio.url)
     #print(audio1)
@@ -93,4 +94,4 @@ def evaluate_page(request, audio_id):
     audio_file.save()
     #score=similarite
     print("score",score)
-    return render(request, 'evaluation.html', {'audio_url': audio_file.audio.url, 'audio_id': audio_id,'score':score})
+    return render(request, 'evaluation.html', {'audio_url': audio_file.audio.url, 'audio_id': audio_id,'score':score,'words':words})
