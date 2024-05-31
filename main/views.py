@@ -8,9 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
-from .models import Group, Child, AudioFile, Word
+from .models import Group, Child, AudioFile, Word, Exercise
 from django.views.decorators.csrf import csrf_exempt
-import os
+from .forms import WordSelectionForm
  
 def home(request):
     if request.user.is_authenticated:
@@ -183,7 +183,7 @@ def age_distribution_view(request):
     context = {
         'age_intervals': age_intervals
     }
-    return render(request, 'base.html', context)
+    return render(request, 'main/base.html', context)
 #@login_required(login_required='/login')
 @csrf_exempt
 def saveaudio(request):
@@ -222,12 +222,14 @@ def listen_audio(request):
     return render(request, 'main/listen.html', {'audio_files': audio_files})
 
 recognizer = sr.Recognizer()
+
 def evaluate_audio(request):
     if request.method == 'POST':
         audio_blob = request.FILES['audio']
         audio_file = AudioFile.objects.create(audio=audio_blob, name='Recorded Audio')
         return JsonResponse({'id': audio_file.id})
     return JsonResponse({'error': 'Invalid request method.'})
+
 
 
 def save_audio(request):
@@ -241,11 +243,12 @@ def save_audio(request):
 
 def evaluate_page(request, audio_id):
     audio_file = get_object_or_404(AudioFile, id=audio_id)
+    words=Word.objects.all()
     #audio1= audio_file.audio.path
     print(audio_file.audio.url)
     #print(audio1)
-    audio="main/static/recordings/important.wav"
-    audiotest="main/static/recordings/important.wav"
+    audio="static/recordings/important.wav"
+    audiotest="static/recordings/important.wav"
     
     with sr.AudioFile(audio) as source:
         audio_data = recognizer.record(source)
@@ -260,12 +263,12 @@ def evaluate_page(request, audio_id):
     transcription_audio_enregistre = pronouncing.phones_for_word(voice2)
     # Comparaison de la similarité phonétique avec la distance de Levenshtein
     similarite = Levenshtein.distance(transcription_mot_attendu, transcription_audio_enregistre)
-    score=100-88 % 100
+    score=100-25 % 100
     audio_file.score=score
     audio_file.save()
     #score=similarite
     print("score",score)
-    return render(request, 'main/evaluation.html', {'audio_url': audio_file.audio.url, 'audio_id': audio_id,'score':score})
+    return render(request, 'main/evaluation.html', {'audio_url': audio_file.audio.url, 'audio_id': audio_id,'score':score,'words':words})
 
 def exercicesChild(request):
     levels = Word.objects.values_list('level', flat=True).distinct()
@@ -276,7 +279,7 @@ def exercicesChild(request):
 def calculate_age(born):
     today = date.today()
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-def profile(request):
+def profile(request): 
     if request.method == 'GET':
         username = request.GET.get('username')
         user=User.objects.get(username=username)
@@ -286,10 +289,47 @@ def profile(request):
         words_by_level = {}
         for level in levels:
             words_by_level[level] = Word.objects.filter(level=level)
+        request.session['child_id'] = child.id
         return render(request, 'main/profile.html', {'user':user,'child':child,'age':age, 'words_by_level': words_by_level })
-        
-        
+def select_words(request):
+    child_id = request.session.get('child_id')
+    child = Child.objects.get(id=child_id)
+    exercise=Exercise.objects.get(child=child)
+    if request.method == 'POST':
+        form = WordSelectionForm(request.POST)
+        if form.is_valid():
+            submit_field = request.POST.get('submit_field', None)
+            
+            if submit_field and submit_field.startswith('new_word_level_'):
+                level = int(submit_field.split('_')[-1])
+                new_word = form.cleaned_data[submit_field]
+                if new_word:
+                    Word.objects.get_or_create(word=new_word, level=level)
+                
+                # Re-render the form to show the updated list of words
+                form = WordSelectionForm()
+                return render(request, 'main/select_words.html', {'form': form, 'Child': child})
+            
+            exercise, created = Exercise.objects.get_or_create(child=child)
+
+            for key, value in form.cleaned_data.items():
+                if key.startswith('level_') and key != 'child':
+                    exercise.words.add(*value)
+
+            return redirect('select_words')
+    else:
+        initial_data = {}
+        exercise = Exercise.objects.filter(child=child).first()
+        if exercise:
+            form = WordSelectionForm()
+            for field_name in form.fields.keys():
+                if field_name.startswith('level_'):
+                    level = int(field_name.split('_')[-1])
+                    initial_data[field_name] = exercise.words.filter(level=level)
+        form = WordSelectionForm(initial=initial_data)
     
+    return render(request, 'main/select_words.html', {'form': form})
+
             
         
     

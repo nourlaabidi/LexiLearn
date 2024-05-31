@@ -51,7 +51,6 @@ button:disabled {
     /*-items: center;
     justify-content: center;*/
     flex-direction: column; 
-    background-color: #FFD06A;
     margin: 10px;
 }
 
@@ -77,4 +76,10 @@ button:disabled {
     color: #333;
     margin-top: -200px; /* Adjust position to center */
     position: relative;
+}
+.scrollable {
+    max-height: 200px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
 }

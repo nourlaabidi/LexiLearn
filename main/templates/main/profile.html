@@ -1,48 +1,44 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
-<body>
 <div class="container mt-5">
-    <div class="profile-card card">
-        <div class="card-header">
-            <p style="margin-top: 30px;"><strong> {{ user.username }}</strong>
-        </div>
-        <div class="card-body">
-                <p><strong>Child Name:</strong> {{ user.username }}</p>
-                <p><strong>Date of Birth:</strong> {{ child.date_of_birth }}</p>
-                <p><strong>Phone Number:</strong> {{ child.phone_number }}</p>
-                <p><strong>Age:</strong> {{ age }}</p>
-                <div class="card-body">
-                    <h1>Word List by Level</h1>
-        <ul>
-            {% for level, words in words_by_level.items %}
-                <li>
-                    <h2 class="clickable" onclick="toggleWords('{{ level }}')" style="cursor: grab;">
-                        Level {{ level }}
-                        <i class="fas fa-chevron-down"></i>
-                    </h2>
-                    <ul id="words_{{ level }}" style="display: none;">
-                        {% for word in words %}
-
-                            <li>{{ word }}</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-        </ul>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title mb-0 text-white">Profile Information</h5>
                 </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <i class="bi bi-person"></i> <strong>Username:</strong> {{ user.username }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-calendar"></i> <strong>Date of Birth:</strong> {{ child.date_of_birth }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-telephone"></i> <strong>Phone Number:</strong> {{ child.phone_number }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-broadcast-pin"></i> <strong>Age:</strong> {{ child.age }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-calendar-check"></i> <strong>Date Joined:</strong> {{ user.date_joined }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-door-open"></i> <strong>Last Login:</strong> {{ user.last_login }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'select_words' %}" class="btn btn-danger btn-block">
+                                <i class="bi bi-book"></i> View Exercices and Progress
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script>
-    function toggleWords(level) {
-        var wordsElement = document.getElementById('words_' + level);
-        if (wordsElement.style.display === 'none') {
-            wordsElement.style.display = 'block';
-        } else {
-            wordsElement.style.display = 'none';
-        }
-    }
-</script>
-</body>
 {% endblock %}

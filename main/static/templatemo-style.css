@@ -407,18 +407,18 @@ thead {
   color: #000;
 }
 input[type="checkbox"] {
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: #394e64;
-  background-position: center;
-  border-radius: 50%;
-  box-sizing: border-box;
-  position: relative;
-  box-sizing: content-box;
-  width: 24px;
-  height: 24px;
-  transition: all 0.1s linear;
+  /* cursor: pointer; */
+  /* -webkit-appearance: none; */
+  /* appearance: none; */
+   background-color: #000000; 
+  /* background-position: center; */
+  /* border-radius: 50%; */
+  /* box-sizing: border-box; */
+  /* position: relative; */
+  /* box-sizing: content-box; */
+  /* width: 24px; */
+  /* height: 24px; */
+  /* transition: all 0.1s linear; */
 }
 input[type="checkbox"]:checked {
   background: url(../img/check-mark.png) #394e64 center no-repeat;

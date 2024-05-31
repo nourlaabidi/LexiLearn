@@ -1,78 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Record Audio</title>
-    {% load static %}
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'styles.css' %}"
-    />
-    <script>
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-          const cookies = document.cookie.split(";");
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
-              cookieValue = decodeURIComponent(
-                cookie.substring(name.length + 1)
-              );
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-      const csrftoken = getCookie("csrftoken");
-
-      function playAudio(audioUrl) {
-        const audioElement = new Audio(audioUrl);
-        audioElement.play();
-        const button = document.getElementById('listenButton');
-        button.classList.toggle('listening');
-      }
-
-      function toggleListening(buttonId) {
-        const button = document.getElementById(buttonId);
-        button.classList.toggle('listening');
-      }
-
-      function saveAndRedirect(audioBlob) {
-        const formData = new FormData();
-        formData.append('audio', audioBlob, 'recording.wav');
-        formData.append('name', 'Recorded Audio');
-
-        fetch('/evaluation/', {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'X-CSRFToken': csrftoken
-          }
-        }).then(response => response.json())
-          .then(data => {
-            if (data.id) {
-              window.location.href = `/evaluation/${data.id}/`;
-            } else {
-              alert(data.error);
-            }
-          });
-      }
-    </script>
-  </head>
-  <body>
-    <div class="container">
-      <h5>Level 1 / Word N°1:</h5>
-      <h1>Important</h1>
-      <div class="button-group">
-        <button id="listenButton" onclick="PlayAudio('/static/recordings/important.wav'); toggleListening('listenButton')">Listen</button>
-        <button id="recordButton">Record</button>
-      </div>
-      <br />
-      <audio id="audioPlayback" controls></audio>
+{% extends 'main/base.html' %}
+{%load static%}
+<body>
+    {% block content %}
+    <div class= "main-content" style="margin-left: 200px;">
+      <div><h3>Level 1 / Word N°1:</h3></div>
+        <h2>Important</h2>
+        <div class="button-group">
+            <button id="listenButton" onclick="playAudio('/static/recordings/important.wav'); toggleListening('listenButton')">Listen</button>
+            <button id="recordButton">Record</button>
+        </div>
+        <br />
+        <audio id="audioPlayback" controls></audio>
+        <audio id="audioPlayback" controls style="display: none"></audio>
     </div>
-    <audio id="audioPlayback" controls style="display: none"></audio>
+    
     <script>
         const recordButton = document.getElementById('recordButton');
         const audioPlayback = document.getElementById('audioPlayback');
@@ -81,32 +22,32 @@
         let isRecording = false;
 
         recordButton.addEventListener('click', async () => {
-          if (!isRecording) {
-            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
-            recordButton.textContent = 'Stop';
-            isRecording = true;
-            audioChunks = [];
+            if (!isRecording) {
+                let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                recordButton.textContent = 'Stop';
+                isRecording = true;
+                audioChunks = [];
 
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
-            const savePath = '/static/recordings/'; // Set the save path to '/static/recordings/'
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // Set the type to 'audio/wav' for WAV format
-                const audioUrl = URL.createObjectURL(audioBlob);
-                audioPlayback.src = audioUrl;
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                const savePath = '/static/recordings/'; // Set the save path to '/static/recordings/'
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // Set the type to 'audio/wav' for WAV format
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    audioPlayback.src = audioUrl;
 
-                // Call the saveAndRedirect function with the recorded audio blob
-                saveAndRedirect(audioBlob);
-            };
-          } else {
-            mediaRecorder.stop();
-            recordButton.textContent = 'Record';
-            isRecording = false;
-          }
+                    // Call the saveAndRedirect function with the recorded audio blob
+                    saveAndRedirect(audioBlob);
+                };
+            } else {
+                mediaRecorder.stop();
+                recordButton.textContent = 'Record';
+                isRecording = false;
+            }
         });
     </script>
-  </body>
-</html>
+    {% endblock %}
+</body>
