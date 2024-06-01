@@ -3,10 +3,11 @@
 <body>
     {% block content %}
     <div class="main-content">
-      <div><h3>Level 1 / Word N°1:</h3></div>
-        <h2>Important</h2>
+        <div><h3 class="Font">Level {{word.level}} / Word N°{{word.id}}:</h3></div>
+        <h2 class="Font">{{word}}</h2>
+
         <div class="button-group">
-            <button id="listenButton" onclick="playAudio('/static/recordings/important.wav'); toggleListening('listenButton')">Listen</button>
+            <button id="listenButton" onclick="playAudio('{{file_path}}'); toggleListening('listenButton')">Listen</button>
             <button id="recordButton">Record</button>
         </div>
         <br />
@@ -33,13 +34,12 @@
                 mediaRecorder.ondataavailable = (event) => {
                     audioChunks.push(event.data);
                 };
-                const savePath = '/static/recordings/'; // Set the save path to '/static/recordings/'
+                const savePath = '/static/recordings/'; 
                 mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // Set the type to 'audio/wav' for WAV format
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); 
                     const audioUrl = URL.createObjectURL(audioBlob);
                     audioPlayback.src = audioUrl;
 
-                    // Call the saveAndRedirect function with the recorded audio blob
                     saveAndRedirect(audioBlob);
                 };
             } else {
@@ -51,3 +51,7 @@
     </script>
     {% endblock %}
 </body>
+
+
+
+

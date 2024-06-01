@@ -1,7 +1,11 @@
 # audio_app/models.py
 from datetime import date
+import os
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
+from gtts import gTTS
+
+from record_vocal import settings
 
 class AudioFile(models.Model):
     name = models.CharField(max_length=100)
@@ -37,12 +41,24 @@ class AudioFile(models.Model):
     
 class Word(models.Model):
     word=models.CharField(max_length=20,null=True)
+    word_vocal= models.FileField(upload_to='recordings/',null=True)
     level=models.IntegerField(null=True)
     def __str__(self):
         return f" {self.word} "
-    
-    
-
-    
-
-    
+    def prepareAudio(self):
+        language = 'en'
+        print("My Text:", self.word)
+        output = gTTS(text=self.word, lang=language, slow=False)
+        file_name = f'{self.id}_output.wav'
+        file_path = os.path.join(settings.MEDIA_ROOT, 'recordings', file_name)
+        print("File path:", file_path)
+        try:
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            output.save(file_path)
+            print("Audio has been saved at:", file_path)
+            self.word_vocal.name = os.path.join('recordings', file_name)
+            self.save()
+            return file_path
+        except Exception as e:
+            print("Error saving audio file:", str(e))
+            return None

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{%load static%}
+<body>
+    {% block content %}
+        <div class="main-content">
+        <h3 class="Font">list of words Level N°1 : </h3>
+        {% for mot in words %}
+        <p class="Font">
+            <a href="{% url 'record_audio' mot.id %}">{{ mot.word }}</a> 
+        </p>
+        {% endfor %}
+        </div>
+    {% endblock %}
+</body>

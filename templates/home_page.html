@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{%load static%}
+<body>
+    {% block content %}
+    <div class="main-content" onclick="window.location.href='/list/'">
+        <h2 class="Font">Exercices</h2>
+        <img src="{% static 'exercices.png' %}" alt="Word List">
+    </div>
+    {% endblock %}
+</body>
+
+
+
+
