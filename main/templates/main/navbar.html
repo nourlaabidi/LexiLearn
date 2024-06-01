@@ -18,8 +18,9 @@
                 <nav id="sidebarMenu" class=" d-md-block sidebar collapse ">
                     <div class="position-sticky py-4 px-3 sidebar-sticky">
                         <ul class="nav flex-column h-100">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{%  url 'home' %}">
+                            {% url 'welcomeO' as home_url %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page" href="{{ home_url }}">
                                     <i class="bi-house-fill me-2"></i>
                                     Overview
                                 </a>
@@ -31,9 +32,9 @@
                                     Reports </i> 
                                 </a>
                             </li>
-
+                            {% url 'accounts' as accounts_url %}
                             <li class="nav-item" style="margin-top: 10px;">
-                                <a class="nav-link" href="{%  url 'accounts' %}">
+                                <a class="nav-link {% if request.path == accounts_url %}active{% endif %}" href="{{ accounts_url }}">
                                     <i class="fas fa-users"></i> Accounts
                                 </a>
                             </li>

@@ -284,17 +284,17 @@ def profile(request):
         username = request.GET.get('username')
         user=User.objects.get(username=username)
         child=Child.objects.get(user=user)
+        request.session['child_id'] = child.id
         age = calculate_age(child.date_of_birth)
         levels = Word.objects.values_list('level', flat=True).distinct()
         words_by_level = {}
         for level in levels:
             words_by_level[level] = Word.objects.filter(level=level)
-        request.session['child_id'] = child.id
         return render(request, 'main/profile.html', {'user':user,'child':child,'age':age, 'words_by_level': words_by_level })
 def select_words(request):
     child_id = request.session.get('child_id')
     child = Child.objects.get(id=child_id)
-    exercise=Exercise.objects.get(child=child)
+    exercise, created = Exercise.objects.get_or_create(child=child)
     if request.method == 'POST':
         form = WordSelectionForm(request.POST)
         if form.is_valid():
@@ -310,7 +310,7 @@ def select_words(request):
                 form = WordSelectionForm()
                 return render(request, 'main/select_words.html', {'form': form, 'Child': child})
             
-            exercise, created = Exercise.objects.get_or_create(child=child)
+            
 
             for key, value in form.cleaned_data.items():
                 if key.startswith('level_') and key != 'child':
@@ -330,6 +330,9 @@ def select_words(request):
     
     return render(request, 'main/select_words.html', {'form': form})
 
-            
+def profileO(request):
+    orthophoniste = request.user
+    return render(request, 'main/profileO.html', {'orthophoniste': orthophoniste})
+         
         
     

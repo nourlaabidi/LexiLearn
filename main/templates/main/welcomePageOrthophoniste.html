@@ -44,7 +44,7 @@
                         <h2 class="tm-block-title mb-0" style="color: grey;">My group</h2>
                         <form action="{% url 'createChild' %}" method="GET">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-warning text-white rounded-circle">
+                            <button type="submit" class="btn btn-danger text-white rounded-circle">
                                 <i class="bi bi-person-plus-fill"></i> <!-- Bootstrap icon for adding a user -->
                             </button>
                         </form>
@@ -54,7 +54,7 @@
                         <form action="{% url 'searchUser' %}" method="get" class="w-100">
                             <div class="d-flex mb-4">
                                 <input type="text" class="form-control me-2" placeholder="Search for users..." aria-label="Search" name="search_query" value="{{ search_query }}">
-                                <button class="btn btn-warning text-white" type="submit">Search</button>
+                                <button class="btn btn-danger text-white" type="submit">Search</button>
                             </div>
                         </form>
                     </div>

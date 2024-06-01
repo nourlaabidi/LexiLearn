@@ -21,5 +21,6 @@ urlpatterns = [
     path('evaluation/<int:audio_id>/', views.evaluate_page, name='evaluate_page'),
     path('select-words/', views.select_words, name='select_words'),
     path('profile/', views.profile, name='profile'),
+    path('profileO/', views.profileO, name='profileO'),
     
 ]
